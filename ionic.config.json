@@ -1,0 +1,7 @@
+{
+  "name": "encuentrame-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
