@@ -1,4 +1,5 @@
 import { AnimalType } from '../core/models';
+import { IconName } from './app-icon.component';
 
 export interface ColorOption {
   label: string;
@@ -59,6 +60,6 @@ export const BREEDS: Record<'Perro' | 'Gato', string[]> = {
   ],
 };
 
-export const typeIcon = (t: AnimalType): string => (t === 'Perro' ? '🐶' : t === 'Gato' ? '🐱' : '🐾');
+export const typeIcon = (t: AnimalType): IconName => (t === 'Perro' ? 'dog' : t === 'Gato' ? 'cat' : 'paw');
 
 export const normalize = (s: string): string => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();

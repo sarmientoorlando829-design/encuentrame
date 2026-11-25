@@ -5,15 +5,16 @@ import {
 import { addIcons } from 'ionicons';
 import { checkmark, chevronForward, closeCircleOutline } from 'ionicons/icons';
 import { AnimalType } from '../core/models';
+import { AppIconComponent } from './app-icon.component';
 import { BREEDS, normalize, typeIcon } from './pet-data';
 
 /** Selector de raza con búsqueda e ícono del animal. Permite escribir una raza que no esté en la lista. */
 @Component({
   selector: 'app-breed-picker',
-  imports: [IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonSearchbar, IonContent, IonList, IonItem, IonLabel, IonIcon],
+  imports: [AppIconComponent, IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonSearchbar, IonContent, IonList, IonItem, IonLabel, IonIcon],
   template: `
     <button type="button" class="row" (click)="open.set(true)">
-      <span class="ico">{{ icon() }}</span>
+      <span class="ico"><app-icon [name]="icon()" [size]="26" /></span>
       <span class="txt">
         <small>Raza (opcional)</small>
         <strong>{{ value() || 'Toca para elegir' }}</strong>
@@ -25,7 +26,7 @@ import { BREEDS, normalize, typeIcon } from './pet-data';
       <ng-template>
         <ion-header>
           <ion-toolbar>
-            <ion-title>{{ icon() }} Raza de {{ type() === 'Gato' ? 'gato' : 'perro' }}</ion-title>
+            <ion-title>Raza de {{ type() === 'Gato' ? 'gato' : 'perro' }}</ion-title>
             <ion-buttons slot="end"><ion-button (click)="close()">Cerrar</ion-button></ion-buttons>
           </ion-toolbar>
           <ion-toolbar>
@@ -36,12 +37,12 @@ import { BREEDS, normalize, typeIcon } from './pet-data';
           <ion-list>
             @if (customOption(); as c) {
               <ion-item button detail="false" (click)="pick(c)">
-                <span slot="start" class="ico">{{ icon() }}</span><ion-label>Usar «{{ c }}»</ion-label>
+                <span slot="start" class="ico"><app-icon [name]="icon()" [size]="22" /></span><ion-label>Usar «{{ c }}»</ion-label>
               </ion-item>
             }
             @for (b of filtered(); track b) {
               <ion-item button detail="false" (click)="pick(b)">
-                <span slot="start" class="ico">{{ icon() }}</span>
+                <span slot="start" class="ico"><app-icon [name]="icon()" [size]="22" /></span>
                 <ion-label>{{ b }}</ion-label>
                 @if (b === value()) { <ion-icon slot="end" name="checkmark" color="primary" /> }
               </ion-item>

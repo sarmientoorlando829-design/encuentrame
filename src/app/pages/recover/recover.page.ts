@@ -4,10 +4,11 @@ import {
   IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonInput, IonSpinner, IonTitle, IonToast, IonToolbar,
 } from '@ionic/angular';
 import { AuthService } from '../../core/auth.service';
+import { AppIconComponent } from '../../shared/app-icon.component';
 
 @Component({
   selector: 'app-recover',
-  imports: [ReactiveFormsModule, IonHeader, IonToolbar, IonTitle, IonContent, IonInput, IonButton, IonToast, IonButtons,
+  imports: [AppIconComponent, ReactiveFormsModule, IonHeader, IonToolbar, IonTitle, IonContent, IonInput, IonButton, IonToast, IonButtons,
     IonBackButton, IonSpinner],
   template: `
     <ion-header>
@@ -18,7 +19,7 @@ import { AuthService } from '../../core/auth.service';
     </ion-header>
     <ion-content class="ion-padding">
       @if (sent()) {
-        <h2>Revisa tu correo 📬</h2>
+        <h2><app-icon name="mail" [size]="24" /> Revisa tu correo</h2>
         <p>Si <strong>{{ form.controls.email.value }}</strong> tiene una cuenta, te enviamos un enlace para crear una nueva contraseña.
           Revisa también la carpeta de spam.</p>
       } @else {

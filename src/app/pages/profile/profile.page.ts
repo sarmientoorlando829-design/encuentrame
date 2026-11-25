@@ -33,7 +33,7 @@ import { ReportsService } from '../../core/reports.service';
 
         <div class="counters">
           <div><strong>{{ activeCount() }}</strong><span>Activos</span></div>
-          <div><strong>{{ resolvedCount() }}</strong><span>Ya volvieron 🏠</span></div>
+          <div><strong>{{ resolvedCount() }}</strong><span>Ya volvieron</span></div>
         </div>
         <h2>Mis reportes publicados</h2>
         @for (r of mine(); track r.id) {
@@ -48,7 +48,7 @@ import { ReportsService } from '../../core/reports.service';
             </div>
             <div class="acts">
               <ion-button size="small" fill="outline" (click)="edit(r)">Editar</ion-button>
-              @if (r.status !== 'resuelta') { <ion-button size="small" color="success" (click)="resolve(r)">Ya volvió 🏠</ion-button> }
+              @if (r.status !== 'resuelta') { <ion-button size="small" color="success" (click)="resolve(r)">Ya volvió</ion-button> }
               <ion-button size="small" fill="outline" color="danger" (click)="remove(r)">Eliminar</ion-button>
             </div>
           </div>

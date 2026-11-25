@@ -12,6 +12,7 @@ import { LatLng, MediaLocationService } from '../../core/media-location.service'
 import { AnimalType, PHONE_PATTERN, PetSize, Report, cleanPhone } from '../../core/models';
 import { NetworkService } from '../../core/network.service';
 import { ReportsService } from '../../core/reports.service';
+import { AppIconComponent } from '../../shared/app-icon.component';
 import { BreedPickerComponent } from '../../shared/breed-picker.component';
 import { ColorPickerComponent } from '../../shared/color-picker.component';
 import { LocationPickerComponent } from '../../shared/location-picker.component';
@@ -21,7 +22,7 @@ const iso = (d: Date): string => new Date(d.getTime() - d.getTimezoneOffset() * 
 
 @Component({
   selector: 'app-new-report',
-  imports: [ReactiveFormsModule, LocationPickerComponent, ColorPickerComponent, BreedPickerComponent, IonHeader, IonToolbar,
+  imports: [AppIconComponent, ReactiveFormsModule, LocationPickerComponent, ColorPickerComponent, BreedPickerComponent, IonHeader, IonToolbar,
     IonTitle, IonContent, IonButtons, IonBackButton, IonButton, IonIcon, IonInput, IonTextarea, IonAccordionGroup,
     IonAccordion, IonItem, IonLabel, IonToast, IonSpinner],
   template: `
@@ -37,8 +38,8 @@ const iso = (d: Date): string => new Date(d.getTime() - d.getTimezoneOffset() * 
 
         <!-- Qué pasó -->
         <div class="two">
-          <button type="button" class="big" [class.sel]="status() === 'perdida'" (click)="status.set('perdida')">😢 Se me perdió</button>
-          <button type="button" class="big" [class.sel]="status() === 'encontrada'" (click)="status.set('encontrada')">🙌 La encontré</button>
+          <button type="button" class="big" [class.sel]="status() === 'perdida'" (click)="status.set('perdida')"><app-icon name="frown" [size]="26" />Se me perdió</button>
+          <button type="button" class="big" [class.sel]="status() === 'encontrada'" (click)="status.set('encontrada')"><app-icon name="hand-heart" [size]="26" />La encontré</button>
         </div>
 
         <!-- 1 Foto -->
@@ -49,11 +50,11 @@ const iso = (d: Date): string => new Date(d.getTime() - d.getTimezoneOffset() * 
         </ion-button>
 
         <!-- 2 Animal -->
-        <h3 id="step-color"><span class="n" [class.ok]="!!color()">{{ color() ? '✓' : '2' }}</span> ¿Qué animal es?</h3>
+        <h3 id="step-color"><span class="n" [class.ok]="!!color()">@if (color()) { <app-icon name="check" [size]="14" /> } @else { 2 }</span> ¿Qué animal es?</h3>
         <div class="three">
           @for (t of animalTypes; track t) {
             <button type="button" class="big" [class.sel]="animalType() === t" (click)="setType(t)">
-              <span class="emoji">{{ icon(t) }}</span>{{ t }}
+              <app-icon [name]="icon(t)" [size]="30" />{{ t }}
             </button>
           }
         </div>
@@ -66,7 +67,7 @@ const iso = (d: Date): string => new Date(d.getTime() - d.getTimezoneOffset() * 
         <app-color-picker [type]="animalType()" [value]="color()" (valueChange)="color.set($event)" />
 
         <!-- 3 Dónde y cuándo -->
-        <h3 id="step-place"><span class="n" [class.ok]="!!coords()">{{ coords() ? '✓' : '3' }}</span> ¿Dónde fue?</h3>
+        <h3 id="step-place"><span class="n" [class.ok]="!!coords()">@if (coords()) { <app-icon name="check" [size]="14" /> } @else { 3 }</span> ¿Dónde fue?</h3>
         <ion-button expand="block" fill="outline" (click)="useGps()" [disabled]="gpsLoading()">
           @if (gpsLoading()) { <ion-spinner name="dots" /> } @else { <ion-icon slot="start" name="locate" />Usar mi ubicación actual }
         </ion-button>
@@ -140,7 +141,6 @@ const iso = (d: Date): string => new Date(d.getTime() - d.getTimezoneOffset() * 
     .big { padding: 12px 6px; border-radius: 14px; border: 2px solid var(--ion-color-step-150, #ddd); background: transparent;
       color: inherit; font: inherit; font-weight: 600; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; }
     .big.sel, .chip.sel { border-color: var(--ion-color-primary); background: color-mix(in srgb, var(--ion-color-primary) 14%, transparent); }
-    .emoji { font-size: 28px; }
     .chips { display: flex; flex-wrap: wrap; gap: 8px; }
     .chip { padding: 8px 16px; border-radius: 20px; border: 2px solid var(--ion-color-step-150, #ddd); background: transparent;
       color: inherit; font: inherit; cursor: pointer; }
@@ -275,8 +275,8 @@ export class NewReportPage {
 
   /** Qué falta para publicar (solo lo indispensable). */
   private firstMissing(): { msg: string; anchor: string } | null {
-    if (!this.color()) return { msg: 'Elige el color de la mascota 🎨', anchor: 'step-color' };
-    if (!this.coords()) return { msg: 'Marca en el mapa dónde fue 📍', anchor: 'step-place' };
+    if (!this.color()) return { msg: 'Elige el color de la mascota', anchor: 'step-color' };
+    if (!this.coords()) return { msg: 'Marca en el mapa dónde fue', anchor: 'step-place' };
     if (this.form.controls.contact_name.invalid || this.form.controls.contact_phone.invalid) {
       this.editContact.set(true);
       return { msg: 'Revisa tu nombre y teléfono de contacto', anchor: 'step-place' };

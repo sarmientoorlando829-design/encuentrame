@@ -9,7 +9,7 @@ export class ShareService {
   }
 
   text(r: Report): string {
-    const head = r.status === 'perdida' ? '🚨 SE BUSCA' : r.status === 'encontrada' ? '🐾 ENCONTRADO, BUSCA DUEÑO' : '🏠 YA VOLVIÓ A CASA';
+    const head = r.status === 'perdida' ? 'SE BUSCA' : r.status === 'encontrada' ? 'ENCONTRADO, BUSCA DUEÑO' : 'YA VOLVIÓ A CASA';
     const who = [r.name, r.animal_type, r.breed].filter(Boolean).join(' · ');
     return [
       head,

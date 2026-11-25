@@ -14,12 +14,13 @@ import { ReportsService } from '../../core/reports.service';
 import { ShareService } from '../../core/share.service';
 import { SightingsService } from '../../core/sightings.service';
 import { AddSightingModal } from '../../shared/add-sighting.modal';
+import { AppIconComponent, IconName } from '../../shared/app-icon.component';
 import { MiniMapComponent } from '../../shared/mini-map.component';
 import { typeIcon } from '../../shared/pet-data';
 
 @Component({
   selector: 'app-report-detail',
-  imports: [DatePipe, MiniMapComponent, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonBackButton, IonBadge,
+  imports: [AppIconComponent, DatePipe, MiniMapComponent, IonHeader, IonToolbar, IonTitle, IonContent, IonButtons, IonBackButton, IonBadge,
     IonButton, IonIcon, IonSpinner],
   template: `
     <ion-header>
@@ -39,14 +40,14 @@ import { typeIcon } from '../../shared/pet-data';
         @if (r.photo_url) { <img [src]="r.photo_url" class="hero" [alt]="r.name ?? r.animal_type" /> }
         <div class="body">
           <ion-badge [color]="badgeColor(r)">{{ label(r) }}</ion-badge>
-          <h1>{{ icon(r) }} {{ r.name || r.animal_type }}</h1>
+          <h1 class="title"><app-icon [name]="icon(r)" [size]="28" /> {{ r.name || r.animal_type }}</h1>
           <div class="facts">
             <span>{{ r.animal_type }}</span>
             @if (r.breed) { <span>{{ r.breed }}</span> }
             <span>{{ r.color }}</span>
             @if (r.size) { <span>{{ r.size }}</span> }
           </div>
-          <p class="meta">📍 {{ r.city }} · 📅 {{ r.lost_date | date: 'dd/MM/yyyy' }}</p>
+          <p class="meta"><app-icon name="pin" [size]="16" /> {{ r.city }} &nbsp;·&nbsp; <app-icon name="calendar" [size]="16" /> {{ r.lost_date | date: 'dd/MM/yyyy' }}</p>
           @if (r.description) { <p>{{ r.description }}</p> }
 
           <h2>Dónde fue</h2>
@@ -66,7 +67,7 @@ import { typeIcon } from '../../shared/pet-data';
             }
           } @else {
             <div class="locked">
-              🔒 Inicia sesión para ver el teléfono y contactar al dueño.
+              <app-icon name="lock" [size]="16" /> Inicia sesión para ver el teléfono y contactar al dueño.
               <ion-button expand="block" class="ion-margin-top" (click)="login()">Iniciar sesión o registrarme</ion-button>
             </div>
           }
@@ -77,7 +78,7 @@ import { typeIcon } from '../../shared/pet-data';
             <div class="row">
               <ion-button fill="outline" (click)="edit(r)"><ion-icon slot="start" name="create-outline" />Editar</ion-button>
               @if (r.status !== 'resuelta') {
-                <ion-button color="success" (click)="resolve(r)">🏠 Ya volvió a casa</ion-button>
+                <ion-button color="success" (click)="resolve(r)"><app-icon slot="start" name="house" [size]="18" />Ya volvió a casa</ion-button>
               }
               <ion-button fill="outline" color="danger" (click)="remove(r)"><ion-icon slot="start" name="trash-outline" />Eliminar</ion-button>
             </div>
@@ -85,7 +86,7 @@ import { typeIcon } from '../../shared/pet-data';
 
           <!-- Avistamientos (RF-05) -->
           <h2>Avistamientos ({{ sightings().length }})</h2>
-          <ion-button expand="block" (click)="addSighting()">👀 Reportar avistamiento</ion-button>
+          <ion-button expand="block" (click)="addSighting()"><app-icon slot="start" name="eye" [size]="18" />Reportar avistamiento</ion-button>
           @for (s of sightings(); track s.id) {
             <div class="sighting">
               <div class="sh"><strong>{{ s.author_name || 'Usuario' }}</strong><span>{{ s.created_at | date: 'dd/MM/yyyy HH:mm' }}</span></div>
@@ -93,7 +94,7 @@ import { typeIcon } from '../../shared/pet-data';
               @if (s.photo_url) { <img [src]="s.photo_url" alt="Foto del avistamiento" /> }
               @if (s.lat !== null && s.lng !== null) {
                 <a [href]="'https://www.openstreetmap.org/?mlat=' + s.lat + '&mlon=' + s.lng + '#map=17/' + s.lat + '/' + s.lng"
-                  target="_blank" rel="noopener">📍 Ver ubicación del avistamiento</a>
+                  target="_blank" rel="noopener"><app-icon name="pin" [size]="14" /> Ver ubicación del avistamiento</a>
               }
             </div>
           } @empty {
@@ -107,7 +108,7 @@ import { typeIcon } from '../../shared/pet-data';
     .center { display: flex; justify-content: center; padding: 40px; }
     .hero { width: 100%; max-height: 340px; object-fit: cover; display: block; }
     .body { padding: 16px 16px 40px; }
-    h1 { margin: 8px 0; } h2 { margin: 24px 0 8px; font-size: 18px; }
+    h1 { margin: 8px 0; } .title { display: flex; align-items: center; gap: 8px; } h2 { margin: 24px 0 8px; font-size: 18px; }
     .facts { display: flex; flex-wrap: wrap; gap: 6px; }
     .facts span { padding: 4px 12px; border-radius: 14px; background: var(--ion-color-step-100, #eee); font-size: 13px; }
     .meta { color: var(--ion-color-medium); }
@@ -138,7 +139,7 @@ export class ReportDetailPage {
   readonly isOwner = computed(() => !!this.report() && this.report()!.user_id === this.auth.currentUser()?.id);
 
   readonly wa = toWhatsappNumber;
-  readonly icon = (r: Report): string => typeIcon(r.animal_type);
+  readonly icon = (r: Report): IconName => typeIcon(r.animal_type);
   readonly label = (r: Report): string => STATUS_LABEL[r.status];
   readonly badgeColor = (r: Report): string => (r.status === 'perdida' ? 'danger' : r.status === 'encontrada' ? 'warning' : 'success');
 
@@ -153,10 +154,14 @@ export class ReportDetailPage {
   async load(): Promise<void> {
     try {
       await this.auth.initialized;
+      // Los avistamientos y el teléfono son secundarios: si fallan, el reporte igual se muestra
       const [r, s, p] = await Promise.all([
         this.reports.getById(this.id),
-        this.sightingsApi.list(this.id),
-        this.reports.getContactPhone(this.id), // null sin sesión (RLS)
+        this.sightingsApi.list(this.id).catch((e) => {
+          console.error('No se pudieron cargar los avistamientos', e);
+          return [] as Sighting[];
+        }),
+        this.reports.getContactPhone(this.id).catch(() => null), // null sin sesión (RLS)
       ]);
       this.report.set(r);
       this.sightings.set(s);

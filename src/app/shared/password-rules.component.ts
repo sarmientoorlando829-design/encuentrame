@@ -1,13 +1,15 @@
 import { Component, computed, input } from '@angular/core';
+import { AppIconComponent } from './app-icon.component';
 
 export const PASSWORD_PATTERN = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 
 @Component({
   selector: 'app-password-rules',
+  imports: [AppIconComponent],
   template: `
     <ul>
       @for (r of rules(); track r.text) {
-        <li [class.ok]="r.ok">{{ r.ok ? '✓' : '○' }} {{ r.text }}</li>
+        <li [class.ok]="r.ok"><app-icon [name]="r.ok ? 'check' : 'circle'" [size]="14" /> {{ r.text }}</li>
       }
     </ul>
   `,

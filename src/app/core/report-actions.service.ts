@@ -31,7 +31,7 @@ export class ReportActionsService {
 
   /** @returns true si cambió el reporte */
   async markResolved(r: Report): Promise<boolean> {
-    const ok = await this.confirm('¡Qué alegría! 🏠', 'Se marcará como "ya volvió a casa" y dejará de aparecer como activo en el mapa.', 'Sí, ya volvió');
+    const ok = await this.confirm('¡Qué alegría!', 'Se marcará como "ya volvió a casa" y dejará de aparecer como activo en el mapa.', 'Sí, ya volvió');
     if (!ok) return false;
     try {
       await this.reports.setStatus(r.id, 'resuelta');

@@ -56,3 +56,11 @@
   &.resuelta span { background: #868e96; }
   &.picker span { background: #3880ff; }
 }
+
+/* Tipografía: Segoe UI (en equipos sin Segoe UI usa la fuente del sistema) */
+:root {
+  --ion-font-family: 'Segoe UI', 'Segoe UI Variable', system-ui, -apple-system, Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+html, body, button, input, textarea, select {
+  font-family: var(--ion-font-family);
+}

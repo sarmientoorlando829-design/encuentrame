@@ -107,7 +107,7 @@ import { ReportMapComponent } from '../../shared/report-map.component';
           <ion-select label="Estado" labelPlacement="floating" fill="outline" [(ngModel)]="draft.status" class="ion-margin-bottom">
             <ion-select-option value="activos">Activos (perdidos y encontrados)</ion-select-option>
             <ion-select-option value="perdida">Perdido</ion-select-option>
-            <ion-select-option value="resuelta">Ya volvió a casa 🏠</ion-select-option>
+            <ion-select-option value="resuelta">Ya volvió a casa</ion-select-option>
           </ion-select>
           <ion-input label="Desde (fecha)" labelPlacement="floating" fill="outline" type="date" [(ngModel)]="draft.dateFrom"
             class="ion-margin-bottom" />
